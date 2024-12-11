@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Bot.Sensors.Vision.Pipelines;
 
+import com.acmerobotics.dashboard.config.Config;
+
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -13,8 +15,9 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Config
 public class AnythingElse extends OpenCvPipeline {
+    public static boolean SHOW_BNW = false;
 
     public static double theta = 0.0;
 
@@ -51,7 +54,8 @@ public class AnythingElse extends OpenCvPipeline {
     }
     @Override
     public Mat processFrame(Mat input) {
-
+        if(input == null) return null;
+        Imgproc.cvtColor(input, HSV, Imgproc.COLOR_RGB2HSV);
         Core.inRange(HSV, lowerRed, upperRed, red);
         Core.inRange(HSV, lowerRed2, upperRed2, red2);
         Core.add(red, red2, red);
@@ -92,6 +96,9 @@ public class AnythingElse extends OpenCvPipeline {
 
         } else {
             centerPoint = new Point(-1, -1);
+        }
+        if(SHOW_BNW){
+            Imgproc.cvtColor(red, input, Imgproc.COLOR_RGB2HSV);
         }
         return input;
     }

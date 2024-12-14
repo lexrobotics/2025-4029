@@ -89,7 +89,7 @@ public class Contour extends OpenCvPipeline {
                 currentArrayPos++;
             }
             if(biggestBoxSize != -1) {
-                MatOfPoint2f points2f = null;
+                MatOfPoint2f points2f = new MatOfPoint2f();
                 points2f.fromArray(contours.get(biggestBox).toArray());
                 RotatedRect fitBound = Imgproc.minAreaRect(points2f);
                 theta = fitBound.angle;

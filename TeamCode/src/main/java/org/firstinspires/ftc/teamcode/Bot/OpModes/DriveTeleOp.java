@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Bot.Sensors.IMUStatic;
 import org.firstinspires.ftc.teamcode.Bot.Setup;
 import org.firstinspires.ftc.teamcode.Bot.Bot;
 
-import org.firstinspires.ftc.teamcode.PedroPathing.localization.Pose;
+import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
 @TeleOp(name = "AAAAAAAAAAAAA", group = "1")
 public class DriveTeleOp extends LinearOpMode {
     Drivetrain drivetrain;

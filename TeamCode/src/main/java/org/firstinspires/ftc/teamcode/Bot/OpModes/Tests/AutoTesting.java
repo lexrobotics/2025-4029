@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Bot.Bot;
 import org.firstinspires.ftc.teamcode.Bot.Drivetrain.Drivetrain;
 import org.firstinspires.ftc.teamcode.Bot.Sensors.IMUStatic;
 import org.firstinspires.ftc.teamcode.Bot.Setup;
-import org.firstinspires.ftc.teamcode.PedroPathing.follower.Follower;
+import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
 
 @Autonomous
 public class AutoTesting extends LinearOpMode {

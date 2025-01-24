@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Bot.OpModes.Auto;
 import android.provider.SyncStateContract;
 import android.view.animation.PathInterpolator;
 
+import org.firstinspires.ftc.teamcode.Bot.Bot;
+import org.firstinspires.ftc.teamcode.Bot.States.ActionSequences;
 import org.firstinspires.ftc.teamcode.PedroPathing.constants.LConstants;
 import org.firstinspires.ftc.teamcode.PedroPathing.follower.Follower;
 import org.firstinspires.ftc.teamcode.PedroPathing.localization.Pose;
@@ -23,6 +25,8 @@ public class AutoBlueLeftQual2 extends OpMode {
 
     private Follower follower;
     private Timer opmodeTimer, pathTimer;
+    private Bot bot;
+    private ActionSequences AS;
 
     private int pathState;
 
@@ -93,50 +97,63 @@ public class AutoBlueLeftQual2 extends OpMode {
                 break;
             case 1:
                 if(!follower.isBusy()){
-                    // score mechanism
+                    AS.sampleScoring(2);
+                    AS.rest();
                     follower.followPath(getSample1, true);
                     setPathState(2);
                 }
                 break;
             case 2:
                 if(!follower.isBusy()){
-                    // intake mechanism
+                    AS.intake();
+                    AS.rest();
                     follower.followPath(scoreSample1, true);
                     setPathState(3);
                 }
                 break;
             case 3:
                 if(!follower.isBusy()){
-                    // score mechanism
+                    AS.sampleScoring(2);
+                    AS.rest();
                     follower.followPath(getSample2, true);
                     setPathState(4);
                 }
                 break;
             case 4:
                 if(!follower.isBusy()){
-                    // intake mechanism
+                    AS.intake();
+                    AS.rest();
                     follower.followPath(scoreSample2, true);
                     setPathState(5);
                 }
                 break;
             case 5:
                 if(!follower.isBusy()){
-                    // score mechanism
+                    AS.sampleScoring(2);
+                    AS.rest();
                     follower.followPath(getSample3, true);
                     setPathState(6);
                 }
                 break;
             case 6:
                 if(!follower.isBusy()){
-                    // intake mechanism
+                    AS.intake();
+                    AS.rest();
                     follower.followPath(scoreSample3, true);
                     setPathState(7);
                 }
                 break;
             case 7:
                 if(!follower.isBusy()){
-                    // score mechanism
+                    AS.sampleScoring(2);
+                    AS.rest();
                     follower.followPath(park);
+                    setPathState(8);
+                }
+                break;
+            case 8:
+                if(!follower.isBusy()){
+                    AS.hang(0);
                     setPathState(-1);
                 }
                 break;
@@ -156,6 +173,7 @@ public class AutoBlueLeftQual2 extends OpMode {
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
+        AS = new ActionSequences(bot);
         //Constants.setConstants(FollowerConstants.class, LConstants.class);
         buildPaths();
     }

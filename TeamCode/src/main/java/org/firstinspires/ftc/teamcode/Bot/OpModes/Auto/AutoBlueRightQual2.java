@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Bot.OpModes.Auto;
 import android.provider.SyncStateContract;
 import android.view.animation.PathInterpolator;
 
+import org.firstinspires.ftc.teamcode.Bot.Bot;
+import org.firstinspires.ftc.teamcode.Bot.States.ActionSequences;
 import org.firstinspires.ftc.teamcode.PedroPathing.constants.LConstants;
 import org.firstinspires.ftc.teamcode.PedroPathing.follower.Follower;
 import org.firstinspires.ftc.teamcode.PedroPathing.localization.Pose;
@@ -23,11 +25,12 @@ public class AutoBlueRightQual2 extends OpMode{
 
     private Follower follower;
     private Timer opmodeTimer, pathTimer;
+    private Bot bot;
+    private ActionSequences AS;
 
     private int pathState;
 
     private final Pose startPose = StartPositions.blueRightDrivePos;
-    private final Pose startPoseControl = new Pose(25.394, 35.963, Math.toRadians(0));
 
     private final Pose scorePose = new Pose(35,64, Math.toRadians(0));
     private final Pose scorePoseControl = new Pose(17.615, 64, Math.toRadians(0));
@@ -49,7 +52,7 @@ public class AutoBlueRightQual2 extends OpMode{
     private final Pose parkPoseControl2 = new Pose(53.578, 22.606, Math.toRadians(0));
 
     private Path park;
-    private PathChain preloadScore, push1, obs1, push2, obs2, toStart, score, pickup;
+    private PathChain preloadScore, push1, obs1, push2, obs2, toPickup, score, pickup;
 
     public void buildPaths() {
 
@@ -78,8 +81,8 @@ public class AutoBlueRightQual2 extends OpMode{
                 .setConstantHeadingInterpolation(obsPose2.getHeading())
                 .build();
 
-        toStart = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(obsPose2), new Point(startPoseControl), new Point(startPose)))
+        toPickup = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(obsPose2), new Point(startPose)))
                 .setConstantHeadingInterpolation(obsPose2.getHeading())
                 .build();
 
@@ -105,7 +108,8 @@ public class AutoBlueRightQual2 extends OpMode{
                 break;
             case 1:
                 if (!follower.isBusy()) {
-                    // score mechanism
+                    AS.specimenScoring(2);
+                    AS.rest();
                     follower.followPath(push1, true);
                     setPathState(2);
                 }
@@ -130,41 +134,45 @@ public class AutoBlueRightQual2 extends OpMode{
                 break;
             case 5:
                 if (!follower.isBusy()){
-                    follower.followPath(toStart, true);
+                    follower.followPath(toPickup, true);
                     setPathState(6);
                 }
                 break;
             case 6:
                 if(!follower.isBusy()){
-                   //specimen pickup
+                   AS.intake();
+                   AS.rest();
                    follower.followPath(score, true);
                    setPathState(7);
                 }
                 break;
             case 7:
                 if(!follower.isBusy()){
-                    //score
+                    AS.specimenScoring(2);
+                    AS.rest();
                     follower.followPath(pickup, true);
                     setPathState(8);
                 }
                 break;
             case 8:
                 if(!follower.isBusy()){
-                    //specimen pickup
+                    AS.intake();
+                    AS.rest();
                     follower.followPath(score, true);
                     setPathState(9);
                 }
                 break;
             case 9:
                 if(!follower.isBusy()){
-                    // score
+                    AS.specimenScoring(2);
+                    AS.rest();
                     follower.followPath(park);
                     setPathState(10);
                 }
                 break;
             case 10:
                 if(!follower.isBusy()){
-                    // ascent
+                    AS.hang(0);
                     setPathState(-1);
                 }
                 break;
@@ -184,6 +192,7 @@ public class AutoBlueRightQual2 extends OpMode{
 
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
+        AS = new ActionSequences(bot);
         //Constants.setConstants(FollowerConstants.class, LConstants.class);
         buildPaths();
     }
